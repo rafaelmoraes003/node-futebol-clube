@@ -20,6 +20,7 @@ describe('Testa a rota POST /login', () => {
       sinon
         .stub(User, 'findOne')
         .resolves({
+          id: 1,
           username: 'Admin',
           role: 'admin',
           email: 'admin@admin.com',
