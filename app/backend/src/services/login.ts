@@ -14,13 +14,13 @@ export default class LoginService {
 
     const user = await this._userModel.findOne({ where: { email } });
 
-    if (!user) return { code: StatusCodes.NOT_FOUND, error: 'User not found.' };
+    if (!user) return { code: StatusCodes.UNAUTHORIZED, error: 'Incorrect email or password' };
 
     await decryptPassword(user.password, password);
 
-    const { id, username } = user;
+    const { id, username, password: passwordHash } = user;
 
-    const token = getToken({ id, username, password, email });
+    const token = getToken({ id, username, passwordHash, email });
     return { code: StatusCodes.OK, token };
   }
 }
