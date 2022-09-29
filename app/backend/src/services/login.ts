@@ -5,6 +5,7 @@ import getToken from '../utils/getToken';
 import StatusCodes from '../types/StatusCodes';
 import decryptPassword from '../utils/decryptPassword';
 import LoginServiceResponse from '../types/ServiceResponse';
+import getTokenProperties from '../utils/getTokenProperties';
 
 export default class LoginService {
   private _userModel = User;
@@ -22,5 +23,16 @@ export default class LoginService {
 
     const token = getToken({ id, username, passwordHash, email });
     return { code: StatusCodes.OK, token };
+  }
+
+  public async validate(token: string | undefined): Promise<LoginServiceResponse> {
+    if (!token) return { code: StatusCodes.NOT_FOUND, error: 'Token not found.' };
+
+    const id = getTokenProperties(token);
+
+    const user = await this._userModel.findOne({ where: { id } }) as User;
+
+    const { role } = user;
+    return { code: 200, data: role };
   }
 }
