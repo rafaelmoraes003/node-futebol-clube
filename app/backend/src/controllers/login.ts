@@ -16,4 +16,15 @@ export default class LoginController {
       next(error);
     }
   };
+
+  public validate = async (req: Request, res: Response, next: NextFunction) => {
+    const { authorization: token } = req.headers;
+    try {
+      const { code, error, data } = await this._loginService.validate(token);
+      if (error) return res.status(code).json({ message: error });
+      return res.status(code).json({ role: data });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
