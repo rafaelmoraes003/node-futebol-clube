@@ -59,7 +59,7 @@ describe('Testa a rota POST /login', () => {
       (User.findOne as sinon.SinonStub).restore();
     });
 
-    it('Verifica se retorna mensagem com status 404', async () => {
+    it('Verifica se retorna mensagem com status 401', async () => {
       const response: Response = await chai
         .request(app)
         .post('/login')
@@ -68,8 +68,8 @@ describe('Testa a rota POST /login', () => {
           password: '1234567',
         });
 
-        expect(response.status).to.be.equal(404);
-        expect(response.body.message).to.be.equal('User not found.');
+        expect(response.status).to.be.equal(401);
+        expect(response.body.message).to.be.equal('Incorrect email or password');
     });
 
   });
