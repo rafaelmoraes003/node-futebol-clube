@@ -106,6 +106,22 @@ describe('Testa a rota POST /login', () => {
 
   });
 
+  describe('Verifica em caso de campos semanticamente errados', () => {
+
+    it('Verifica se retorna erro com status 422', async () => {
+      const response: Response = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          email: 'usuario',
+          password: '123456',
+        });
+
+      expect(response.status).to.be.equal(422);
+    });
+
+  });
+
   describe('Testa em caso de usuário com senha incorreta', () => {
 
     before(async () => {
