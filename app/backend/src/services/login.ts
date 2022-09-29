@@ -4,7 +4,7 @@ import loginSchema from '../schemas/login';
 import getToken from '../utils/getToken';
 import StatusCodes from '../types/StatusCodes';
 import decryptPassword from '../utils/decryptPassword';
-import LoginServiceResponse from '../types/ServiceResponse';
+import { LoginServiceResponse } from '../types/ServiceResponse';
 import getTokenProperties from '../utils/getTokenProperties';
 
 export default class LoginService {
