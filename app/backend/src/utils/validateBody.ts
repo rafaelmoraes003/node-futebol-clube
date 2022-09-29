@@ -9,10 +9,16 @@ interface IBody {
 
 const validateBody = (schema: joi.ObjectSchema, obj: IBody): void => {
   const { error } = schema.validate(obj);
+
   if (error) {
+    const errorMessage = error.details[0].message;
+    const status = errorMessage.includes('filled')
+      ? StatusCodes.BAD_REQUEST
+      : StatusCodes.SEMANTIC_ERROR;
+
     throw new CustomError(
-      StatusCodes.SEMANTIC_ERROR,
-      error.details[0].message,
+      status,
+      errorMessage,
     );
   }
 };
