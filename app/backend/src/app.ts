@@ -1,6 +1,7 @@
 import * as express from 'express';
 import loginRoute from './routes/login';
 import CustomError from './types/CustomError';
+import StatusCodes from './types/StatusCodes';
 
 class App {
   public app: express.Express;
@@ -21,8 +22,10 @@ class App {
       res: express.Response,
       _next: express.NextFunction,
     ) => {
-      const { code, message } = err;
-      return res.status(code).json({ message });
+      if (err.code) {
+        return res.status(err.code).json({ message: err.message });
+      }
+      return res.status(StatusCodes.SERVER_ERROR).json({ message: 'Server Error' });
     });
   }
 
