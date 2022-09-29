@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 
-interface ITokenPayload {
+export interface ITokenPayload {
   id: number,
   username: string,
   email: string,
@@ -8,7 +8,7 @@ interface ITokenPayload {
 }
 
 const getToken = (payload: ITokenPayload): string => {
-  const token = jwt.sign(payload, 'jwt_secret');
+  const token = jwt.sign(payload, process.env.JWT_SECRET as string);
   return token;
 };
 
