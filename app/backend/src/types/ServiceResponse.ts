@@ -1,10 +1,14 @@
 import StatusCodes from './StatusCodes';
 
-interface LoginServiceResponse {
+export interface LoginServiceResponse {
   code: StatusCodes,
   error?: string,
   token?: string,
   data?: string,
 }
 
-export default LoginServiceResponse;
+export interface TeamsServiceResponse<T> {
+  code: StatusCodes,
+  error?: string,
+  data: T,
+}
