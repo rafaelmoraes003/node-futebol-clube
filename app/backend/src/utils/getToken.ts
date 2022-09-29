@@ -4,7 +4,7 @@ interface ITokenPayload {
   id: number,
   username: string,
   email: string,
-  password: string,
+  passwordHash: string,
 }
 
 const getToken = (payload: ITokenPayload): string => {
