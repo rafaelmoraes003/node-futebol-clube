@@ -10,5 +10,5 @@ export interface LoginServiceResponse {
 export interface TeamsServiceResponse<T> {
   code: StatusCodes,
   error?: string,
-  data: T,
+  data?: T,
 }
