@@ -6,8 +6,9 @@ import { ServiceResponse } from '../types/ServiceResponse';
 export default class MatchesService {
   private _matchesModel = Match;
 
-  public async getAll(): Promise<ServiceResponse<Match[]>> {
+  public async getAll(inProgress: string | undefined): Promise<ServiceResponse<Match[]>> {
     const matches = await this._matchesModel.findAll({
+      ...(inProgress && { where: { inProgress: JSON.parse(inProgress) } }),
       include: [
         {
           model: Team,
