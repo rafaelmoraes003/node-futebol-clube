@@ -52,4 +52,11 @@ export default class MatchesService {
     if (!match) return { code: StatusCodes.NOT_FOUND, error: 'Match not found.' };
     return { code: StatusCodes.OK, data: match };
   }
+
+  public async finishMatch(id: number): Promise<ServiceResponse<string>> {
+    const { error, code } = await this.getById(id);
+    if (error) return { code, error };
+    await this._matchesModel.update({ inProgress: false }, { where: { id } });
+    return { code: StatusCodes.OK, data: 'Finished' };
+  }
 }
