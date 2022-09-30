@@ -63,4 +63,56 @@ describe('Testa a rota GET /matches', () => {
 
   });
 
+  describe('Testa a rota GET /matches?inProgress=true', () => {
+
+    before(async () => {
+      sinon
+        .stub(Match, 'findAll')
+        .resolves([matches[0], matches[1]] as any as Match[]);
+    });
+
+    after(async () => {
+      (Match.findAll as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se tem partidas em andamento', async () => {
+      const response: Response = await chai
+        .request(app)
+        .get('/matches?inProgress=true')
+      
+      expect(response.status).to.be.equal(StatusCodes.OK);
+      expect(response.body).to.be.an('array');
+      response.body.forEach((i: Match) => {
+        expect(i.inProgress).to.be.true;
+      })
+    });
+
+  });
+
+  describe('Testa a rota GET /matches?inProgress=false', () => {
+
+    before(async () => {
+      sinon
+        .stub(Match, 'findAll')
+        .resolves([matches[2], matches[3]] as any as Match[]);
+    });
+
+    after(async () => {
+      (Match.findAll as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se uma partidas finalizadas', async () => {
+      const response: Response = await chai
+        .request(app)
+        .get('/matches?inProgress=true')
+      
+      expect(response.status).to.be.equal(StatusCodes.OK);
+      expect(response.body).to.be.an('array');
+      response.body.forEach((i: Match) => {
+        expect(i.inProgress).to.be.false;
+      })
+    });
+
+  });
+
 });
