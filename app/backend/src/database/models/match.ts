@@ -39,13 +39,16 @@ Match.init({
 }, {
   sequelize: db,
   modelName: 'matches',
+  underscored: true,
   timestamps: false,
 });
 
 Match.belongsTo(Team, {
-  foreignKey: 'id' as 'homeTeam',
+  foreignKey: 'homeTeam', as: 'teamHome',
 });
 
 Match.belongsTo(Team, {
-  foreignKey: 'id' as 'awayTeam',
+  foreignKey: 'awayTeam', as: 'teamAway',
 });
+
+export default Match;
