@@ -7,7 +7,7 @@ export interface LoginServiceResponse {
   data?: string,
 }
 
-export interface TeamsServiceResponse<T> {
+export interface ServiceResponse<T> {
   code: StatusCodes,
   error?: string,
   data?: T,
