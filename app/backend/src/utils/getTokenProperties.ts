@@ -11,7 +11,7 @@ const getTokenProperties = (token: string): number => {
     const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as ITokenPayload;
     return id;
   } catch (error) {
-    throw new CustomError(StatusCodes.BAD_REQUEST, 'Invalid signature.');
+    throw new CustomError(StatusCodes.UNAUTHORIZED, 'Token must be a valid token.');
   }
 };
 
