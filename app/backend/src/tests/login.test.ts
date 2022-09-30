@@ -239,8 +239,8 @@ describe('Testa a rota GET /login/validate', () => {
         .get('/login/validate')
         .set('authorization', wrongToken );
 
-      expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
-      expect(response.body.message).to.be.equal('Invalid signature.');
+      expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+      expect(response.body.message).to.be.equal('Token must be a valid token.');
     });
 
   });
