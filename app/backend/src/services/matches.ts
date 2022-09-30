@@ -2,6 +2,10 @@ import StatusCodes from '../types/StatusCodes';
 import Match from '../database/models/match';
 import Team from '../database/models/team';
 import { ServiceResponse } from '../types/ServiceResponse';
+import IMatch from '../types/interfaces';
+import validateBody from '../utils/validateBody';
+import matchSchema from '../schemas/matches';
+import validateTeams from '../utils/validateTeams';
 
 export default class MatchesService {
   private _matchesModel = Match;
@@ -23,5 +27,23 @@ export default class MatchesService {
       ],
     });
     return { code: StatusCodes.OK, data: matches };
+  }
+
+  public async create(match: IMatch): Promise<ServiceResponse<IMatch>> {
+    validateBody(matchSchema, match);
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = match;
+
+    if (!inProgress) return { code: StatusCodes.BAD_REQUEST, error: 'InProgress must be true.' };
+
+    await validateTeams([homeTeam, awayTeam]);
+
+    const { id } = await this._matchesModel.create({
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress,
+    });
+    return { code: StatusCodes.CREATED, data: { id, ...match } };
   }
 }
