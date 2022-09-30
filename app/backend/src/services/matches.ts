@@ -46,4 +46,10 @@ export default class MatchesService {
     });
     return { code: StatusCodes.CREATED, data: { id, ...match } };
   }
+
+  public async getById(id: number): Promise<ServiceResponse<Match>> {
+    const match = await this._matchesModel.findOne({ where: { id } });
+    if (!match) return { code: StatusCodes.NOT_FOUND, error: 'Match not found.' };
+    return { code: StatusCodes.OK, data: match };
+  }
 }
