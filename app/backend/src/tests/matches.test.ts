@@ -130,8 +130,11 @@ describe('Testa a rota POST /matches', () => {
 
     before(async () => {
       sinon
-        .stub(Team, 'findAll')
-        .resolves([teams[0], teams[1]] as Team[]);
+        .stub(Team, 'findAndCountAll')
+        .resolves({
+          rows: [teams[0], teams[1]] as Team[],
+          count: 2,
+        });
 
       sinon
         .stub(Match, 'create')
@@ -141,7 +144,7 @@ describe('Testa a rota POST /matches', () => {
     });
 
     after(async () => {
-      (Team.findAll as sinon.SinonStub).restore();
+      (Team.findAndCountAll as sinon.SinonStub).restore();
       (Match.create as sinon.SinonStub).restore();
     });
 
@@ -210,15 +213,18 @@ describe('Testa a rota POST /matches', () => {
 
     before(async () => {
       sinon
-        .stub(Team, 'findAll')
-        .resolves([teams[0]] as Team[]);
+        .stub(Team, 'findAndCountAll')
+        .resolves({
+          rows: [teams[0]] as Team[],
+          count: 1,
+        });
     });
 
     after(async () => {
-      (Team.findAll as sinon.SinonStub).restore();
+      (Team.findAndCountAll as sinon.SinonStub).restore();
     });
 
-    it('Verifica se retorna erro com status 400', async () => {
+    it('Verifica se retorna erro com status 404', async () => {
       const response: Response = await chai
         .request(app)
         .post('/matches')
@@ -231,8 +237,8 @@ describe('Testa a rota POST /matches', () => {
           inProgress: true
         });
 
-      expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
-      expect(response.body.message).to.be.equal('Invalid teams.');
+      expect(response.status).to.be.equal(StatusCodes.NOT_FOUND);
+      expect(response.body.message).to.be.equal('There is no team with such id!');
     }); 
 
   });
