@@ -280,3 +280,79 @@ describe('Testa a rota POST /matches', () => {
 
 });
 
+describe('Testa o endpoint PATCH /matches/:id/finish', () => {
+
+  describe('Testa em caso de sucesso', () => {
+
+    before(async () => {
+      sinon
+        .stub(Match, 'findOne')
+        .resolves(match as any as Match);
+
+      sinon
+        .stub(Match, 'update')
+        .resolves();
+    });
+
+    after(async () => {
+      (Match.findOne as sinon.SinonStub).restore();
+      (Match.update as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna a partida finalizada', async () => {
+      const response: Response = await chai
+        .request(app)
+        .patch('/matches/1/finish')
+      
+      expect(response.status).to.be.equal(StatusCodes.OK);
+      expect(response.body.message).to.be.equal('Finished')
+    });
+
+  });
+
+  describe('Testa em caso de partida inexistente', () => {
+
+    before(async () => {
+      sinon
+        .stub(Match, 'findOne')
+        .resolves(null);
+    });
+
+    after(async () => {
+      (Match.findOne as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna erro com status 404', async () => {
+      const response: Response = await chai
+        .request(app)
+        .patch('/matches/99/finish')
+      
+      expect(response.status).to.be.equal(StatusCodes.NOT_FOUND);
+      expect(response.body.message).to.be.equal('Match not found.');
+    });
+
+  });
+
+  describe('Testa em caso de erro no servidor', () => {
+
+    before(async () => {
+      sinon
+        .stub(Match, 'findOne')
+        .rejects();
+    });
+
+    after(async () => {
+      (Match.findOne as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna erro com status 500', async () => {
+      const response: Response = await chai
+        .request(app)
+        .patch('/matches/99/finish')
+      
+      expect(response.status).to.be.equal(StatusCodes.SERVER_ERROR);
+    });
+
+  });
+
+});
