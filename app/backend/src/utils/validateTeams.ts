@@ -6,8 +6,8 @@ const validateTeams = async (teams: number[]): Promise<void> => {
   const count = await Team.findAll({ where: { id: teams } });
   if (count.length !== teams.length) {
     throw new CustomError(
-      StatusCodes.BAD_REQUEST,
-      'Invalid teams.',
+      StatusCodes.NOT_FOUND,
+      'There is no team with such id!',
     );
   }
 };
