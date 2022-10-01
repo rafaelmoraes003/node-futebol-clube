@@ -5,11 +5,16 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import Match from '../database/models/match';
+import Team from '../database/models/team';
 
 import { Response } from 'superagent';
 
 import StatusCodes from '../types/StatusCodes';
 import matches from './utils/matches';
+import teams from './utils/teams';
+import match from './utils/match';
+
+import { token, wrongToken } from './utils/token';
 
 chai.use(chaiHttp);
 
@@ -116,3 +121,162 @@ describe('Testa a rota GET /matches', () => {
   });
 
 });
+
+
+describe('Testa a rota POST /matches', () => {
+
+  describe('Testa a criação de uma partida com sucesso', () => {
+
+
+    before(async () => {
+      sinon
+        .stub(Team, 'findAll')
+        .resolves([teams[0], teams[1]] as Team[]);
+
+      sinon
+        .stub(Match, 'create')
+        .resolves({
+          id: 1,
+        } as Match);
+    });
+
+    after(async () => {
+      (Team.findAll as sinon.SinonStub).restore();
+      (Match.create as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna a partida criada', async () => {
+      const response: Response = await chai
+        .request(app)
+        .post('/matches')
+        .set('authorization', token)
+        .send({
+          homeTeam: 1,
+          awayTeam: 2,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+          inProgress: true
+        });
+
+      expect(response.status).to.be.equal(StatusCodes.CREATED);
+      expect(response.body).to.have.keys('id', 'homeTeam', 'awayTeam', 'homeTeamGoals', 'awayTeamGoals', 'inProgress')
+      expect(response.body.inProgress).to.be.true;
+    }); 
+
+  });
+
+  describe('Testa criação de partida com erro semântico no corpo da requisição', () => {
+
+    it('Verifica se retorna erro com status 422', async () => {
+      const response: Response = await chai
+        .request(app)
+        .post('/matches')
+        .set('authorization', token)
+        .send({
+          homeTeam: 'um',
+          awayTeam: 'um',
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+          inProgress: true
+        });
+      
+      expect(response.status).to.be.equal(StatusCodes.SEMANTIC_ERROR);
+    }); 
+
+  });
+
+  describe('Testa criação de partida propriedade inProgress = false', () => {
+
+    it('Verifica se retorna erro com status 400', async () => {
+      const response: Response = await chai
+        .request(app)
+        .post('/matches')
+        .set('authorization', token)
+        .send({
+          homeTeam: 1,
+          awayTeam: 1,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+          inProgress: false
+        });
+
+      expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
+      expect(response.body.message).to.be.equal('InProgress must be true.');
+    }); 
+
+  });
+
+  describe('Testa criação de partida com times que não existem', () => {
+
+    before(async () => {
+      sinon
+        .stub(Team, 'findAll')
+        .resolves([teams[0]] as Team[]);
+    });
+
+    after(async () => {
+      (Team.findAll as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna erro com status 400', async () => {
+      const response: Response = await chai
+        .request(app)
+        .post('/matches')
+        .set('authorization', token)
+        .send({
+          homeTeam: 1,
+          awayTeam: 895,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+          inProgress: true
+        });
+
+      expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
+      expect(response.body.message).to.be.equal('Invalid teams.');
+    }); 
+
+  });
+
+  describe('Testa criação de partida com token inexistente', () => {
+
+    it('Verifica se retorna erro com status 400', async () => {
+      const response: Response = await chai
+        .request(app)
+        .post('/matches')
+        .send({
+          homeTeam: 1,
+          awayTeam: 2,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+          inProgress: true
+        });
+
+      expect(response.status).to.be.equal(StatusCodes.NOT_FOUND);
+      expect(response.body.message).to.be.equal('Token not found.');
+    }); 
+
+  });
+
+  describe('Testa criação de partida com token inválido', () => {
+
+    it('Verifica se retorna erro com status 400', async () => {
+      const response: Response = await chai
+        .request(app)
+        .post('/matches')
+        .set('authorization', wrongToken)
+        .send({
+          homeTeam: 1,
+          awayTeam: 2,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+          inProgress: true
+        });
+
+      expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+      expect(response.body.message).to.be.equal('Token must be a valid token');
+    }); 
+
+  });
+
+});
+
