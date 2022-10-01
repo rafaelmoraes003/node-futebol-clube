@@ -9,7 +9,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
   const { authorization: token } = req.headers;
   if (!token) {
     return res.status(StatusCodes.NOT_FOUND).json({
-      message: 'Token not found',
+      message: 'Token not found.',
     });
   }
   try {
