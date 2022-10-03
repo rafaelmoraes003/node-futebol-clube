@@ -266,7 +266,7 @@ describe('Testa a rota POST /matches', () => {
 
   describe('Testa criação de partida com token inexistente', () => {
 
-    it('Verifica se retorna erro com status 400', async () => {
+    it('Verifica se retorna erro com status 404', async () => {
       const response: Response = await chai
         .request(app)
         .post('/matches')
