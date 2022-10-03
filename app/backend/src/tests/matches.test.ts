@@ -243,6 +243,27 @@ describe('Testa a rota POST /matches', () => {
 
   });
 
+  describe('Testa criação de partida com times iguais', () => {
+
+    it('Verifica se retorna erro com status 401', async () => {
+      const response: Response = await chai
+        .request(app)
+        .post('/matches')
+        .set('authorization', token)
+        .send({
+          homeTeam: 1,
+          awayTeam: 1,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+          inProgress: true
+        });
+
+      expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+      expect(response.body.message).to.be.equal("It is not possible to create a match with two equal teams");
+    }); 
+
+  });
+
   describe('Testa criação de partida com token inexistente', () => {
 
     it('Verifica se retorna erro com status 400', async () => {
