@@ -33,7 +33,11 @@ export default class MatchesService {
     validateBody(matchSchema, match);
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = match;
 
-    if (!inProgress) return { code: StatusCodes.BAD_REQUEST, error: 'InProgress must be true.' };
+    if (inProgress === false) { // Pode ser undefined mas não pode ser false
+      return {
+        code: StatusCodes.BAD_REQUEST, error: 'InProgress must be true.',
+      };
+    }
 
     await validateTeams([homeTeam, awayTeam]);
 
@@ -42,9 +46,9 @@ export default class MatchesService {
       awayTeam,
       homeTeamGoals,
       awayTeamGoals,
-      inProgress,
+      inProgress: true,
     });
-    return { code: StatusCodes.CREATED, data: { id, ...match } };
+    return { code: StatusCodes.CREATED, data: { id, ...match, inProgress: true } };
   }
 
   public async getById(id: number): Promise<ServiceResponse<Match>> {
