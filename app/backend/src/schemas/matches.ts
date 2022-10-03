@@ -1,6 +1,6 @@
 import * as joi from 'joi';
 
-const matchSchema = joi.object({
+export const matchSchema = joi.object({
   homeTeam: joi.number().required(),
   awayTeam: joi.number().required(),
   homeTeamGoals: joi.number().required(),
@@ -10,4 +10,7 @@ const matchSchema = joi.object({
   ),
 });
 
-export default matchSchema;
+export const updateMatchResultSchema = joi.object({
+  homeTeamGoals: joi.number().required(),
+  awayTeamGoals: joi.number().required(),
+});
