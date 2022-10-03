@@ -5,7 +5,9 @@ const matchSchema = joi.object({
   awayTeam: joi.number().required(),
   homeTeamGoals: joi.number().required(),
   awayTeamGoals: joi.number().required(),
-  inProgress: joi.boolean().required(),
+  inProgress: joi.alternatives(
+    joi.boolean(),
+  ),
 });
 
 export default matchSchema;
