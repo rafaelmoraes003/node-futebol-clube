@@ -2,9 +2,9 @@ import StatusCodes from '../types/StatusCodes';
 import Match from '../database/models/match';
 import Team from '../database/models/team';
 import { ServiceResponse } from '../types/ServiceResponse';
-import IMatch from '../types/interfaces';
+import { IMatch, IGoals } from '../types/interfaces';
 import validateBody from '../utils/validateBody';
-import matchSchema from '../schemas/matches';
+import { matchSchema, updateMatchResultSchema } from '../schemas/matches';
 import validateTeams from '../utils/validateTeams';
 
 export default class MatchesService {
@@ -52,7 +52,7 @@ export default class MatchesService {
   }
 
   public async getById(id: number): Promise<ServiceResponse<Match>> {
-    const match = await this._matchesModel.findOne({ where: { id } });
+    const match = await this._matchesModel.findByPk(id);
     if (!match) return { code: StatusCodes.NOT_FOUND, error: 'Match not found.' };
     return { code: StatusCodes.OK, data: match };
   }
@@ -60,7 +60,23 @@ export default class MatchesService {
   public async finishMatch(id: number): Promise<ServiceResponse<string>> {
     const { error, code } = await this.getById(id);
     if (error) return { code, error };
+
     await this._matchesModel.update({ inProgress: false }, { where: { id } });
     return { code: StatusCodes.OK, data: 'Finished' };
+  }
+
+  public async updateMatch(id: number, goals: IGoals): Promise<ServiceResponse<string>> {
+    validateBody(updateMatchResultSchema, goals);
+    const { homeTeamGoals, awayTeamGoals } = goals;
+
+    const { error, code } = await this.getById(id);
+    if (error) return { code, error };
+
+    await this._matchesModel.update(
+      { homeTeamGoals, awayTeamGoals },
+      { where: { id } },
+    );
+
+    return { code: StatusCodes.OK, data: 'Match results updated!' };
   }
 }
