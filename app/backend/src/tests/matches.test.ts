@@ -307,13 +307,13 @@ describe('Testa a rota POST /matches', () => {
 
 });
 
-describe('Testa o endpoint PATCH /matches/:id/finish', () => {
+describe('Testa a rota PATCH /matches/:id/finish', () => {
 
   describe('Testa em caso de sucesso', () => {
 
     before(async () => {
       sinon
-        .stub(Match, 'findOne')
+        .stub(Match, 'findByPk')
         .resolves(match as any as Match);
 
       sinon
@@ -322,7 +322,7 @@ describe('Testa o endpoint PATCH /matches/:id/finish', () => {
     });
 
     after(async () => {
-      (Match.findOne as sinon.SinonStub).restore();
+      (Match.findByPk as sinon.SinonStub).restore();
       (Match.update as sinon.SinonStub).restore();
     });
 
@@ -341,12 +341,12 @@ describe('Testa o endpoint PATCH /matches/:id/finish', () => {
 
     before(async () => {
       sinon
-        .stub(Match, 'findOne')
+        .stub(Match, 'findByPk')
         .resolves(null);
     });
 
     after(async () => {
-      (Match.findOne as sinon.SinonStub).restore();
+      (Match.findByPk as sinon.SinonStub).restore();
     });
 
     it('Verifica se retorna erro com status 404', async () => {
@@ -364,12 +364,12 @@ describe('Testa o endpoint PATCH /matches/:id/finish', () => {
 
     before(async () => {
       sinon
-        .stub(Match, 'findOne')
+        .stub(Match, 'findByPk')
         .rejects();
     });
 
     after(async () => {
-      (Match.findOne as sinon.SinonStub).restore();
+      (Match.findByPk as sinon.SinonStub).restore();
     });
 
     it('Verifica se retorna erro com status 500', async () => {
@@ -381,5 +381,111 @@ describe('Testa o endpoint PATCH /matches/:id/finish', () => {
     });
 
   });
+
+});
+
+describe('Testa a rota PATCH /macthes/:id', () => {
+
+  describe('Testa em caso de sucesso', () => {
+
+    before(async () => {
+      sinon
+        .stub(Match, 'findByPk')
+        .resolves(match as any as Match);
+
+      sinon
+        .stub(Match, 'update')
+        .resolves();
+    });
+
+    after(async () => {
+      (Match.findByPk as sinon.SinonStub).restore();
+      (Match.update as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna mensagem com status 200', async () => {
+      const response: Response = await chai
+        .request(app)
+        .patch('/matches/1')
+        .send({
+          homeTeamGoals: 3,
+          awayTeamGoals: 1,
+        });
+
+      expect(response.status).to.be.equal(StatusCodes.OK);
+      expect(response.body.message).to.be.equal('Match results updated!');
+    });
+
+  });
+
+  describe('Testa em caso de partida inexistente', () => {
+
+    before(async () => {
+      sinon
+        .stub(Match, 'findByPk')
+        .resolves(null);
+    });
+
+    after(async () => {
+      (Match.findByPk as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna erro com status 404', async () => {
+      const response: Response = await chai
+        .request(app)
+        .patch('/matches/99')
+        .send({
+          homeTeamGoals: 3,
+          awayTeamGoals: 1,
+        })
+      
+      expect(response.status).to.be.equal(StatusCodes.NOT_FOUND);
+      expect(response.body.message).to.be.equal('Match not found.');
+    });
+
+  });
+
+  describe('Testa atualização de partida com erro semântico no corpo da requisição', () => {
+
+    it('Verifica se retorna erro com status 422', async () => {
+      const response: Response = await chai
+        .request(app)
+        .patch('/matches/1')
+        .send({
+          homeTeamGoals: 'one',
+          awayTeamGoals: 'two',
+        });
+
+      expect(response.status).to.be.equal(StatusCodes.SEMANTIC_ERROR);
+    }); 
+
+  });
+
+  describe('Testa em caso de erro no servidor', () => {
+
+    before(async () => {
+      sinon
+        .stub(Match, 'findByPk')
+        .rejects();
+    });
+
+    after(async () => {
+      (Match.findByPk as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna um erro com status 500', async () => {
+      const response: Response = await chai
+        .request(app)
+        .patch('/matches/99')
+        .send({
+          homeTeamGoals: 2,
+          awayTeamGoals: 1,
+        });
+      
+      expect(response.status).to.be.equal(StatusCodes.SERVER_ERROR);
+    });
+
+  });
+
 
 });
