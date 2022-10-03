@@ -10,6 +10,8 @@ matches.get('/', matchesController.getAll);
 
 matches.post('/', auth, matchesController.create);
 
+matches.patch('/:id', matchesController.updateMatch);
+
 matches.patch('/:id/finish', matchesController.finishMatch);
 
 export default matches;
