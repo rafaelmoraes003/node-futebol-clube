@@ -71,3 +71,58 @@ describe('Testa a rota GET /leaderboard/home', () => {
   });
 
 });
+
+describe('Testa a rota GET /leaderboard/away', () => {
+
+  describe('Testa em caso de sucesso', () => {
+
+    before(async () => {
+      sinon
+        .stub(Team, 'findAll')
+        .resolves(teams as Team[]);
+      
+      sinon
+        .stub(Match, 'findAll')
+        .resolves(matchesNotInProgress as any as Match[]);
+    })
+
+    after(async () => {
+      (Team.findAll as sinon.SinonStub).restore();
+      (Match.findAll as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna o placar dos times vsitantes com status 200', async () => {
+      const response: Response = await chai
+        .request(app)
+        .get('/leaderboard/away')
+
+      expect(response.status).to.be.equal(StatusCodes.OK);
+      expect(response.body).to.deep.equal(awayLeaderboard);
+
+    });
+
+  });
+
+  describe('Testa em caso de erro no servicdor', () => {
+
+    before(async () => {
+      sinon
+        .stub(Team, 'findAll')
+        .rejects();
+    });
+
+    after(async () => {
+      (Team.findAll as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna erro com status 500', async () => {
+      const response: Response = await chai
+        .request(app)
+        .get('/leaderboard/away')
+
+      expect(response.status).to.be.equal(StatusCodes.SERVER_ERROR);
+
+    });
+  });
+
+});
