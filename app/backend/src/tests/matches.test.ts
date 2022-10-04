@@ -10,11 +10,13 @@ import Team from '../database/models/team';
 import { Response } from 'superagent';
 
 import StatusCodes from '../types/StatusCodes';
-import matches from './utils/matches';
+import { matchesNotInProgress, matchesInProgress } from './utils/matches';
 import teams from './utils/teams';
 import match from './utils/match';
 
 import { token, wrongToken } from './utils/token';
+
+const matches = [...matchesNotInProgress, ...matchesInProgress ];
 
 chai.use(chaiHttp);
 
@@ -73,7 +75,7 @@ describe('Testa a rota GET /matches', () => {
     before(async () => {
       sinon
         .stub(Match, 'findAll')
-        .resolves([matches[0], matches[1]] as any as Match[]);
+        .resolves(matchesInProgress as any as Match[]);
     });
 
     after(async () => {
@@ -99,7 +101,7 @@ describe('Testa a rota GET /matches', () => {
     before(async () => {
       sinon
         .stub(Match, 'findAll')
-        .resolves([matches[2], matches[3]] as any as Match[]);
+        .resolves(matchesNotInProgress as any as Match[]);
     });
 
     after(async () => {
@@ -286,7 +288,7 @@ describe('Testa a rota POST /matches', () => {
 
   describe('Testa criação de partida com token inválido', () => {
 
-    it('Verifica se retorna erro com status 400', async () => {
+    it('Verifica se retorna erro com status 401', async () => {
       const response: Response = await chai
         .request(app)
         .post('/matches')
