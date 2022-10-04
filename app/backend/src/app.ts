@@ -2,6 +2,7 @@ import * as express from 'express';
 import loginRoute from './routes/login';
 import teamsRoute from './routes/teams';
 import matchesRoute from './routes/matches';
+import leaderboardRoute from './routes/leaderboard';
 import CustomError from './types/CustomError';
 import StatusCodes from './types/StatusCodes';
 
@@ -19,6 +20,7 @@ class App {
     this.app.use('/login', loginRoute);
     this.app.use('/teams', teamsRoute);
     this.app.use('/matches', matchesRoute);
+    this.app.use('/leaderboard', leaderboardRoute);
 
     this.app.use((
       err: CustomError,
