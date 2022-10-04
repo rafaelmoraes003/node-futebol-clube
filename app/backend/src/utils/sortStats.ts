@@ -1,6 +1,6 @@
 import { ITeamStats } from '../types/interfaces';
 
-const sortStats = (a: ITeamStats, b: ITeamStats) => {
+const sortStats = (a: ITeamStats, b: ITeamStats): number => {
   if (a.totalPoints > b.totalPoints) return -1;
   if (a.totalPoints < b.totalPoints) return 1;
 
