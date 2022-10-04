@@ -2,6 +2,7 @@ import Match from '../database/models/match';
 import Team from '../database/models/team';
 import { ITeamStats } from '../types/interfaces';
 import { stats, cleanStats, getStats } from './getStats';
+import sortStats from './sortStats';
 
 const getLeaderboardStats = (
   teams: Team[],
@@ -19,23 +20,33 @@ const getLeaderboardStats = (
   return { name: teamName, ...stats };
 });
 
-const orderedLeaderboard = (teams: Team[], matches: Match[], type: string): ITeamStats[] => {
-  const leaderboard = getLeaderboardStats(teams, matches, type);
-  return leaderboard.sort((a: ITeamStats, b: ITeamStats) => {
-    if (a.totalPoints > b.totalPoints) return -1;
-    if (a.totalPoints < b.totalPoints) return 1;
-
-    if (a.goalsBalance > b.goalsBalance) return -1;
-    if (a.goalsBalance < b.goalsBalance) return 1;
-
-    if (a.goalsFavor > b.goalsFavor) return -1;
-    if (a.goalsFavor < b.goalsFavor) return 1;
-
-    if (a.goalsOwn < b.goalsOwn) return -1;
-    if (a.goalsOwn > b.goalsOwn) return 1;
-
-    return 0;
+const getAllLeaderboardStats = (
+  teams: Team[],
+  matches: Match[],
+) => teams.map(({ id, teamName }): ITeamStats => {
+  cleanStats();
+  matches.forEach(({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }) => {
+    if (id === homeTeam) {
+      stats.totalGames += 1;
+      getStats(homeTeamGoals, awayTeamGoals, 'home');
+    } else if (id === awayTeam) {
+      stats.totalGames += 1;
+      getStats(homeTeamGoals, awayTeamGoals, 'away');
+    }
   });
+  return { name: teamName, ...stats };
+});
+
+const orderedLeaderboard = (
+  teams: Team[],
+  matches: Match[],
+  type: string | undefined,
+): ITeamStats[] => {
+  const leaderboard = type
+    ? getLeaderboardStats(teams, matches, type)
+    : getAllLeaderboardStats(teams, matches);
+
+  return leaderboard.sort(sortStats);
 };
 
 export default orderedLeaderboard;
