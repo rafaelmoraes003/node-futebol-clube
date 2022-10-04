@@ -12,7 +12,7 @@ import { Response } from 'superagent';
 import StatusCodes from '../types/StatusCodes';
 import { matchesNotInProgress } from './utils/matches';
 import teams from './utils/teams';
-import { homeLeaderboard, awayLeaderboard } from './utils/leaderboard';
+import { homeLeaderboard, awayLeaderboard, homeAndAwayLeaderboard } from './utils/leaderboard';
 
 chai.use(chaiHttp);
 
@@ -84,7 +84,7 @@ describe('Testa a rota GET /leaderboard/away', () => {
       sinon
         .stub(Match, 'findAll')
         .resolves(matchesNotInProgress as any as Match[]);
-    })
+    });
 
     after(async () => {
       (Team.findAll as sinon.SinonStub).restore();
@@ -119,6 +119,60 @@ describe('Testa a rota GET /leaderboard/away', () => {
       const response: Response = await chai
         .request(app)
         .get('/leaderboard/away')
+
+      expect(response.status).to.be.equal(StatusCodes.SERVER_ERROR);
+
+    });
+  });
+
+});
+
+describe('Testa a rota GET /leaderboard', () => {
+
+  describe('Testa em caso de sucesso', () => {
+
+    before(async () => {
+      sinon
+        .stub(Team, 'findAll')
+        .resolves(teams as Team[]);
+      
+      sinon
+        .stub(Match, 'findAll')
+        .resolves(matchesNotInProgress as any as Match[]);
+    });
+
+    after(async () => {
+      (Team.findAll as sinon.SinonStub).restore();
+      (Match.findAll as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna o placar geral dos times com status 200', async () => {
+      const response: Response = await chai
+        .request(app)
+        .get('/leaderboard')
+
+      expect(response.status).to.be.equal(StatusCodes.OK);
+      expect(response.body).to.deep.equal(homeAndAwayLeaderboard);
+    });
+
+  });
+
+  describe('Testa em caso de erro no servicdor', () => {
+
+    before(async () => {
+      sinon
+        .stub(Team, 'findAll')
+        .rejects();
+    });
+
+    after(async () => {
+      (Team.findAll as sinon.SinonStub).restore();
+    });
+
+    it('Verifica se retorna erro com status 500', async () => {
+      const response: Response = await chai
+        .request(app)
+        .get('/leaderboard')
 
       expect(response.status).to.be.equal(StatusCodes.SERVER_ERROR);
 
