@@ -7,6 +7,7 @@ class Match extends Model {
   homeTeam!: number;
   homeTeamGoals!: number;
   awayTeam!: number;
+  awayTeamGoals!: number;
   inProgress!: number;
 }
 
