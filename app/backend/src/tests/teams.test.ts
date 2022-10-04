@@ -29,13 +29,14 @@ describe('Testa a rota GET /teams', () => {
       (Team.findAll as sinon.SinonStub).restore();
     });
 
-    it('Verifica se retorna um array com status 200', async () => {
+    it('Verifica se retorna um array de times com status 200', async () => {
       const response: Response = await chai
         .request(app)
         .get('/teams');
       
       expect(response.status).to.be.equal(StatusCodes.OK);
       expect(response.body).to.be.an('array');
+      expect(response.body).to.deep.equal(teams);
     });
 
   });
