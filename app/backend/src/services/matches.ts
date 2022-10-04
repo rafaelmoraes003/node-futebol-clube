@@ -1,31 +1,17 @@
 import StatusCodes from '../types/StatusCodes';
 import Match from '../database/models/match';
-import Team from '../database/models/team';
 import { ServiceResponse } from '../types/ServiceResponse';
 import { IMatch, IGoals } from '../types/interfaces';
 import validateBody from '../utils/validateBody';
 import { matchSchema, updateMatchResultSchema } from '../schemas/matches';
 import validateTeams from '../utils/validateTeams';
+import getMatches from '../utils/getMatches';
 
 export default class MatchesService {
   private _matchesModel = Match;
 
-  public async getAll(inProgress: string | undefined): Promise<ServiceResponse<Match[]>> {
-    const matches = await this._matchesModel.findAll({
-      ...(inProgress && { where: { inProgress: JSON.parse(inProgress) } }),
-      include: [
-        {
-          model: Team,
-          as: 'teamHome',
-          attributes: { exclude: ['id'] },
-        },
-        {
-          model: Team,
-          as: 'teamAway',
-          attributes: { exclude: ['id'] },
-        },
-      ],
-    });
+  public static async getAll(inProgress: string | undefined): Promise<ServiceResponse<Match[]>> {
+    const matches = await getMatches(inProgress);
     return { code: StatusCodes.OK, data: matches };
   }
 
