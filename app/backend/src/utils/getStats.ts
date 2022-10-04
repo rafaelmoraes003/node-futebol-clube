@@ -30,4 +30,14 @@ export const getStats = (homeTeamGoals: number, awayTeamGoals: number, type: str
   stats.efficiency = ((stats.totalPoints / (stats.totalGames * 3)) * 100).toFixed(2);
 };
 
-export default getStats;
+export const cleanStats = (): void => {
+  stats.totalPoints = 0;
+  stats.totalGames = 0;
+  stats.totalVictories = 0;
+  stats.totalDraws = 0;
+  stats.totalLosses = 0;
+  stats.goalsFavor = 0;
+  stats.goalsOwn = 0;
+  stats.goalsBalance = 0;
+  stats.efficiency = '0';
+};
