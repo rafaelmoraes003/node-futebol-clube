@@ -24,3 +24,13 @@ export interface ITeamStats {
   goalsBalance: number,
   efficiency: string,
 }
+
+export interface IStatsProps {
+  id: number,
+  homeTeam?: number,
+  awayTeam?: number,
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+  teamType?: number,
+  type?: string,
+}
