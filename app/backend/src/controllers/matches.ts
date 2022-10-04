@@ -7,7 +7,7 @@ export default class MatchesController {
   public getAll = async (req: Request, res: Response, next: NextFunction) => {
     const { inProgress } = req.query;
     try {
-      const { code, data } = await this._matchesService.getAll(inProgress as (string | undefined));
+      const { code, data } = await MatchesService.getAll(inProgress as (string | undefined));
       return res.status(code).json(data);
     } catch (error) {
       next(error);
