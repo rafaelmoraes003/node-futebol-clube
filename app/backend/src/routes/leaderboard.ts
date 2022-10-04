@@ -7,4 +7,6 @@ const leaderboardController = new LeaderboardController();
 
 leaderboard.get('/home', leaderboardController.getHomeLeaderboard);
 
+leaderboard.get('/away', leaderboardController.getAwayLeaderboard);
+
 export default leaderboard;
