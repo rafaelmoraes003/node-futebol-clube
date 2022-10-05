@@ -67,7 +67,7 @@ Na pasta raiz do projeto, utilize o comando `npm run compose:up:dev`. O Front-En
 | `POST` | Realiza login do usuário já cadastrado e retorna um token para autenticação | http://localhost:3001/login |
 | `GET` |  Recebe um header com parâmetro authorization, onde ficará armazenado o token gerado no login e retorna qual o tipo do usuário  | http://localhost:3001/login/validate |
 
-Na requisição POST, é necessário informar o seguinte JSON:
+Na requisição ` POST`, é necessário informar o seguinte JSON:
 
 ```
 {
@@ -93,7 +93,7 @@ Na requisição POST, é necessário informar o seguinte JSON:
 | `PATCH` | Atualiza uma partida em andamento baseada em seu id | http://localhost:3001/matches/:id |
 | `PATCH` | Finaliza uma partida em andamento baseada em seu id | http://localhost:3001/matches/:id/finish |
 
-Na requisição GET, é possível filtrar por partidas em andamento e partidas finalizadas através de query string:
+Na requisição `GET`, é possível filtrar por partidas em andamento e partidas finalizadas através de query string:
 
 ```
 http://localhost:3001/matches?inProgress=true
@@ -101,7 +101,7 @@ http://localhost:3001/matches?inProgress=false
 ```
 ###
 
-Na requisção POST, é necessaŕio passar um JSON no seguinte formato:
+Na requisção `POST`, é necessaŕio passar um JSON no seguinte formato:
 
 ```
 {
@@ -118,7 +118,7 @@ Na requisção POST, é necessaŕio passar um JSON no seguinte formato:
 ###
 ###
 
-Na requisição PATCH ` /matches/:id `, é necessário passar um JSON no seguinte formato:
+Na requisição `PATCH` ` /matches/:id `, é necessário passar um JSON no seguinte formato:
 
 ```
 {
