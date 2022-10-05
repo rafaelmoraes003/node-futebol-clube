@@ -135,3 +135,11 @@ Na requisição `PATCH` ` /matches/:id `, é necessário passar um JSON no segui
 | `GET` | Retorna as classificações dos times baseado em todas suas partidas jogadas | http://localhost:3001/leaderboard |
 | `GET` | Retorna as classificações dos times mandantes | http://localhost:3001/leaderboard/home |
 | `GET` | Retorna as classificações dos times visitantes | http://localhost:3001/leaderboard/away |
+                
+###
+                
+<h2 align="left">CONSIDERAÇÕES</h2>
+                              
+###
+                
+É importante ressaltar que APENAS o Back-End da aplicação foi desenvolvido por mim. O Front-End já foi fornecido estruturado e desenvolvido pelo time da Trybe.
