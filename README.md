@@ -42,14 +42,6 @@ Faça o clone da aplicação usando o comando `git clone`. Após isso, entre na 
 
 ###
 
-<h2 align="left">Banco de dados</h2>
-
-###
-
-Rode o comando `npm run build` na pasta do back-end para fazer o build da aplicação.
-
-###
-
 <h2 align="left">Rodando a aplicação com o Docker</h2>
 
 ###
