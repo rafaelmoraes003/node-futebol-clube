@@ -46,7 +46,7 @@ Faça o clone da aplicação usando o comando `git clone`. Após isso, entre na 
 
 ###
 
-Na pasta raiz do projeto, utilize o comando `npm run compose:up:dev`. O Front-End estará localizado na porta `3000`, o Back-End na porta `3001` e o banco de dados (MySQL) na porta `3002`.
+Na pasta raiz do projeto, utilize o comando `npm run compose:up`. O Front-End estará localizado na porta `3000`, o Back-End na porta `3001` e o banco de dados (MySQL) na porta `3002`.
 
 ###
 
