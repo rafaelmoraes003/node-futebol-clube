@@ -1,4 +1,4 @@
-# Projeto Node Futebol Clube (Back-End)
+# Node Futebol Clube (Back-End)
 
 O projeto Node Futebol Clube tinha como objetivo desenvolver uma API que fornece informações sobre times, partidas e placares de lideranças em um campeonato de futebol.
 
