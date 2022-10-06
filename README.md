@@ -50,6 +50,14 @@ Na pasta raiz do projeto, utilize o comando `npm run compose:up`. O Front-End es
 
 ###
 
+<h2 align="left">Testes de integração</h2>
+
+###
+
+Na pasta `/app/backend`, para rodar os testes de integração, utilize o comando `npm test`. Para verificar a cobertura dos testes, utilize o comando `npm run test:coverage`.
+
+###
+
 <h2 align="left">Endpoints</h2>
 
 <h3 align="left">LOGIN</h3>
