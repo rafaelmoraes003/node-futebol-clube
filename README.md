@@ -71,8 +71,8 @@ Na requisição ` POST`, é necessário informar o seguinte JSON:
 
 ```
 {
-  "email": "email@email.com",
-  "password": "123456"
+  "email": "admin@admin.com",
+  "password": "secret_admin"
 }
 ```
 
