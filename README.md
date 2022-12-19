@@ -1,16 +1,16 @@
 # Node Futebol Clube (Back-End)
 
-O projeto Node Futebol Clube tinha como objetivo desenvolver uma API que fornece informações sobre times, partidas e placares de lideranças em um campeonato de futebol.
+The Node Futebol Clube project aimed to develop an API that provides information about teams, matches and leaderboards in a soccer championship.
 
-Nesse projeto, foi construído um back-end dockerizado utilizando modelagem de dados através do Sequelize em uma estrutura MSC que respeitava as regras de negócio de um front-end já estruturado.
+In this project, a dockerized back-end was built using data modeling through Sequelize in an MSC structure that respected the business rules of an already structured front-end.
 
-Na API, é possível ver dados sobre usuários, times, partidas (todas as partidas, partidas em andamento e/ou partidas finalizadas) e placares (placar geral, de times mandantes e/ou de times visitantes). Além disso, é possível criar e atualizar partidas e usuários.
+In the API, it is possible to see data about users, teams, matches (all matches, ongoing matches and/or finished matches) and scores (overall score, home team and/or away team score). In addition, it is possible to create and update matches and users.
 
-O projeto foi feito usando TypeScript, Node.js, Express, MySQL, Sequelize e Docker, todos aplicados à programação orientada à objetos e seguindo os princípios do SOLID. Além do mais, os testes de integração feitos com Mocha, Chai e Sinon tem cobertura de +99% de todo o projeto.
+The project was made using TypeScript, Node.js, Express, MySQL, Sequelize and Docker, all applied to object-oriented programming and following the principles of SOLID. What's more, the integration tests done with Mocha, Chai and Sinon have +99% coverage of the entire project.
 
 ###
 
-<h2 align="left">Tecnologias utilizadas</h2>
+<h2 align="left">Technologies used</h2>
 
 ###
 
@@ -27,73 +27,73 @@ O projeto foi feito usando TypeScript, Node.js, Express, MySQL, Sequelize e Dock
 ###
 
 
-<h2 align="left">Como utilizar a aplicação</h2>
+<h2 align="left">How to use the application</h2>
 
 ###
 
-Faça o clone da aplicação usando o comando `git clone`. Após isso, entre na pasta do projeto utilizando o comando `cd node-futebol-clube`.
+Clone the application using the `git clone` command. After that, enter the project folder using the `cd node-soccer-club` command.
 
 ###
 
-<h2 align="left">Configurações necessárias</h2>
+<h2 align="left">Required settings</h2>
 
-- `node` a partir da versão `16.14.0 LTS`
-- `docker-compose` a partir da versão `1.29.2`
-
-###
-
-<h2 align="left">Rodando a aplicação com o Docker</h2>
+- `node` from version `16.14.0 LTS`
+- `docker-compose` from version `1.29.2`
 
 ###
 
-Na pasta raiz do projeto, utilize o comando `npm run compose:up`. O Front-End estará localizado na porta `3000`, o Back-End na porta `3001` e o banco de dados (MySQL) na porta `3002`.
+<h2 align="left">Running the application with Docker</h2>
 
 ###
 
-<h2 align="left">Testes de integração</h2>
+In the root folder of the project, use the `npm run compose:up` command. The Front-End will be located on port `3000`, the Back-End on port `3001` and the database (MySQL) on port `3002`.
 
 ###
 
-Na pasta `/app/backend`, para rodar os testes de integração, utilize o comando `npm test`. Para verificar a cobertura dos testes, utilize o comando `npm run test:coverage`.
+<h2 align="left">Integration tests</h2>
+
+###
+
+In the folder `/app/backend`, to run the integration tests, use the `npm test` command. To check test coverage, use the `npm run test:coverage` command.
 
 ###
 
 <h2 align="left">Endpoints</h2>
 
-<h3 align="left">LOGIN</h3>
+<h3 align="left">Login</h3>
 
-| Método | Funcionalidade | URL |
+| Method | Functionality | URL |
 |---|---|---|
-| `POST` | Realiza login do usuário já cadastrado e retorna um token para autenticação | http://localhost:3001/login |
-| `GET` |  Recebe um header com parâmetro authorization, onde ficará armazenado o token gerado no login e retorna qual o tipo do usuário  | http://localhost:3001/login/validate |
+| `POST` | Login | http://localhost:3001/login |
+| `GET` |  Receives a header with authorization parameter, where the token generated at login will be stored and returns the type of user  | http://localhost:3001/login/validate |
 
-Na requisição ` POST`, é necessário informar o seguinte JSON:
+In the `POST` request, it is necessary to inform the following JSON:
 
-```
+```JavaScript
 {
-  "email": "admin@admin.com",
-  "password": "secret_admin"
+  email: "admin@admin.com",
+  password: "secret_admin"
 }
 ```
 
-<h3 align="left">TIMES</h3>
+<h3 align="left">Teams</h3>
 
-| Método | Funcionalidade | URL |
+| Method | Functionality | URL |
 |---|---|---|
-| `GET` | Retorna todos os times do campeonato | http://localhost:3001/teams |
-| `GET` | Retorna um time baseado em seu id | http://localhost:3001/teams/:id |
+| `GET` | List all league teams | http://localhost:3001/teams |
+| `GET` | List a team based on its id | http://localhost:3001/teams/:id |
 
 
-<h3 align="left">PARTIDAS</h3>
+<h3 align="left">Matches</h3>
 
-| Método | Funcionalidade | URL |
+| Method | Functionality | URL |
 |---|---|---|
-| `GET` | Retorna todas as partidas do campeonato | http://localhost:3001/matches |
-| `POST` | Criação de partida | http://localhost:3001/matches |
-| `PATCH` | Atualiza uma partida em andamento baseada em seu id | http://localhost:3001/matches/:id |
-| `PATCH` | Finaliza uma partida em andamento baseada em seu id | http://localhost:3001/matches/:id/finish |
+| `GET` | List all league matches | http://localhost:3001/matches |
+| `POST` | Create new match | http://localhost:3001/matches |
+| `PATCH` | Updates a match in progress based on its id | http://localhost:3001/matches/:id |
+| `PATCH` | Finish an ongoing match based on your id | http://localhost:3001/matches/:id/finish |
 
-Na requisição `GET`, é possível filtrar por partidas em andamento e partidas finalizadas através de query string:
+In the `GET` request, it is possible to filter by matches in progress and finished matches through the query string:
 
 ```
 http://localhost:3001/matches?inProgress=true
@@ -101,45 +101,44 @@ http://localhost:3001/matches?inProgress=false
 ```
 ###
 
-Na requisção `POST`, é necessaŕio passar um JSON no seguinte formato:
+In the `POST` request, it is necessary to pass a JSON in the following format:
 
-```
+```JavaScript
 {
-  "homeTeam": 16, // O valor deve ser o id do time
-  "awayTeam": 8, // O valor deve ser o id do time
-  "homeTeamGoals": 2,
-  "awayTeamGoals": 2,
-  "inProgress": true // A propriedade inProgress é opcional, mas se for passada DEVE ter o valor true
+  homeTeam: 16, // The value must be the team id
+  awayTeam: 8, // The value must be the team id
+  homeTeamGoals: 2,
+  awayTeamGoals: 2,
+  inProgress: true // The property is optional, but if passed it MUST have the value true
 }
 ```
 
-` OBS `: É necessário fazer login e colocar o token recebido como parâmetro do header authorization para conseguir criar uma partida.
+`OBS`: It is necessary to login and put the token received as a header authorization parameter to be able to create a match.
 
 ###
-###
 
-Na requisição `PATCH` ` /matches/:id `, é necessário passar um JSON no seguinte formato:
+In the `PATCH` request, it is necessary to pass a JSON in the following format:
 
-```
+```JavaScript
 {
-  "homeTeamGoals": 3,
-  "awayTeamGoals": 1
+  homeTeamGoals: 3,
+  awayTeamGoals: 1
 }
 ```
 
 
-<h3 align="left">CLASSIFICAÇÃO DE TIMES (LEADERBOARD)</h3>
+<h3 align="left">Leaderboard</h3>
 
-| Método | Funcionalidade | URL |
+| Method | Functionality | URL |
 |---|---|---|
-| `GET` | Retorna as classificações dos times baseado em todas suas partidas jogadas | http://localhost:3001/leaderboard |
-| `GET` | Retorna as classificações dos times mandantes | http://localhost:3001/leaderboard/home |
-| `GET` | Retorna as classificações dos times visitantes | http://localhost:3001/leaderboard/away |
+| `GET` | Lists team rankings based on all their games played | http://localhost:3001/leaderboard |
+| `GET` | List rankings of home teams | http://localhost:3001/leaderboard/home |
+| `GET` | List rankings of visiting teams | http://localhost:3001/leaderboard/away |
                 
 ###
                 
-<h2 align="left">CONSIDERAÇÕES</h2>
+<h2 align="left">Considerations</h2>
                               
 ###
                 
-É importante ressaltar que APENAS o Back-End da aplicação foi desenvolvido por mim. O Front-End já foi fornecido estruturado e desenvolvido pelo time da Trybe.
+It is important to point out that ONLY the Back-End of the application was developed by me. The Front-End has already been structured and developed by the Trybe team.
