@@ -31,7 +31,7 @@ The project was made using TypeScript, Node.js, Express, MySQL, Sequelize and Do
 
 ###
 
-Clone the application using the `git clone` command. After that, enter the project folder using the `cd node-soccer-club` command.
+Clone the application using the `git clone` command. After that, enter the project folder using the `cd node-futebol-clube` command.
 
 ###
 
