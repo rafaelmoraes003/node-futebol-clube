@@ -37,7 +37,7 @@ Clone the application using the `git clone` command. After that, enter the proje
 
 <h2 align="left">Required settings</h2>
 
-- `node` from version `16.14.0 LTS`
+- `node` from version `16.14.0 LTS` 
 - `docker-compose` from version `1.29.2`
 
 ###
