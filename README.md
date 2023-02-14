@@ -6,7 +6,7 @@ In this project, a dockerized back-end was built using data modeling through Seq
 
 In the API, it is possible to see data about users, teams, matches (all matches, ongoing matches and/or finished matches) and scores (overall score, home team and/or away team score). In addition, it is possible to create and update matches and users.
 
-The project was made using TypeScript, Node.js, Express, MySQL, Sequelize and Docker, all applied to object-oriented programming and following the principles of SOLID. What's more, the integration tests done with Mocha, Chai and Sinon have +99% coverage of the entire project.
+The project was made using TypeScript, Node.js, Express, MySQL, Sequelize and Docker, all applied to object-oriented programming and following the principles of SOLID. What's more, the integration tests done with Mocha, Chai and Sinon have +99% coverage of the entire project. 
 
 ###
 
